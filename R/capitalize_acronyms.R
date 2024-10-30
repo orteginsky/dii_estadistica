@@ -9,8 +9,8 @@
 #' @return A character string with the acronym in uppercase and the remaining text
 #'         in title case.
 #' @examples
-#' capitalize_acronyms("ESIA ZACATENCO")
-#' capitalize_acronyms("CICS MILPA ALTA")
+#' capitalize_acronyms('ESIA ZACATENCO')
+#' capitalize_acronyms('CICS MILPA ALTA')
 #' @export
 capitalize_acronyms <- function(text) {
   # Separate the acronym (uppercase sequence) from the rest of the text

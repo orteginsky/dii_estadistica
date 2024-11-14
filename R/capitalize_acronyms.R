@@ -13,16 +13,21 @@
 #' capitalize_acronyms('CICS MILPA ALTA')
 #' @export
 capitalize_acronyms <- function(text) {
+  # Ensure 'text' is a single character string
+  if (length(text) != 1) {
+    stop("Input must be a single character string.")
+  }
+
   # Separate the acronym (uppercase sequence) from the rest of the text
   acronym <- gsub("\\s.*", "", text, perl = TRUE)
   remaining_text <- gsub("^[^\\s]*\\s", "", text, perl = TRUE)
 
-  # Check if text is only the acronym
-  if (acronym == remaining_text) {
-    return(acronym)
+  # Check if the text contains only the acronym or has additional text
+  if (remaining_text == "") {
+    return(acronym)  # Only acronym is present
   } else {
     # Capitalize the remaining text in title case
-    remaining_text <- str_to_title(tolower(remaining_text))
+    remaining_text <- stringr::str_to_title(tolower(remaining_text))
 
     # Combine the uppercase acronym with the title-cased remaining text
     result <- paste(acronym, remaining_text, sep = " ")

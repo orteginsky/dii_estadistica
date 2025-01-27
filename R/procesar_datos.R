@@ -121,6 +121,13 @@ procesar_datos <- function(datos, columnas_creadas, n_columna) {
       "Doctorado en Ciencias y Tecnología de Vacunas y Bioterapéuticos"
     )
 
+  if ("Sexo" %in% colnames(datos)) {
+    datos <- datos %>%
+      filter(!str_detect("Subt",Sexo)) %>%
+      mutate(Sexo = gsub("^H$","Hombres",Sexo)) %>%
+      mutate(Sexo = gsub("^M$","Mujeres",Sexo))
+  }
+
   # Retornar el dataframe procesado
   return(datos)
 }

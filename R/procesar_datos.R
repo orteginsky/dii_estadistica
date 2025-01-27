@@ -82,6 +82,7 @@ procesar_datos <- function(datos, columnas_creadas, n_columna) {
   datos <- datos %>%
     diiestadistica::remove_columns("Total") %>%
     diiestadistica::remove_columns("Subtotal") %>%
+    diiestadistica::remove_columns("Subt") %>%
     diiestadistica::remove_columns("\\+")
 
   # 9. Filtrar filas que no son relevantes
@@ -128,6 +129,8 @@ procesar_datos <- function(datos, columnas_creadas, n_columna) {
       mutate(Sexo = gsub("^M$","Mujeres",Sexo))
   }
 
+  datos <- datos %>%
+    filter(!is.na(Datos))
   # Retornar el dataframe procesado
   return(datos)
 }

@@ -88,7 +88,7 @@ totals <- function(data, created_columns, n_column) {
   data <- data[filter_condition, ]
 
   # Clean program names
-  datos$Programa <- datos$Programa %>%
+  data$Programa <- data$Programa %>%
     str_replace_all("^Ing\\. ", "Ingeniería ") %>%
     str_replace_all("^Lic\\. ", "Licenciatura ") %>%
     trimws() %>%
@@ -106,8 +106,8 @@ totals <- function(data, created_columns, n_column) {
       "Doctorado en Ciencias y Tecnología de Vacunas y Bioterapéuticos"
     )
 
-  if ("Sexo" %in% colnames(datos)) {
-    datos <- datos %>%
+  if ("Sexo" %in% colnames(data)) {
+    data <- data %>%
       filter(!str_detect("Subt",Sexo)) %>%
       mutate(Sexo = gsub("^H$","Hombres",Sexo)) %>%
       mutate(Sexo = gsub("^M$","Mujeres",Sexo)) %>%
@@ -115,8 +115,8 @@ totals <- function(data, created_columns, n_column) {
       mutate(Sexo = gsub("^Muj$","Mujeres",Sexo))
   }
 
-  if ("Turno" %in% colnames(datos)) {
-    datos <- datos %>%
+  if ("Turno" %in% colnames(data)) {
+    data <- data %>%
       filter(!str_detect("Subt",Turno)) %>%
       mutate(Turno = gsub("^V$","Vespertino",Turno)) %>%
       mutate(Turno = gsub("^M$","Matutino",Turno)) %>%

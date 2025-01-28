@@ -126,7 +126,19 @@ procesar_datos <- function(datos, columnas_creadas, n_columna) {
     datos <- datos %>%
       filter(!str_detect("Subt",Sexo)) %>%
       mutate(Sexo = gsub("^H$","Hombres",Sexo)) %>%
-      mutate(Sexo = gsub("^M$","Mujeres",Sexo))
+      mutate(Sexo = gsub("^M$","Mujeres",Sexo)) %>%
+      mutate(Sexo = gsub("^Hom$","Hombres",Sexo)) %>%
+      mutate(Sexo = gsub("^Muj$","Mujeres",Sexo))
+  }
+
+  if ("Turno" %in% colnames(datos)) {
+    datos <- datos %>%
+      filter(!str_detect("Subt",Turno)) %>%
+      mutate(Turno = gsub("^V$","Vespertino",Turno)) %>%
+      mutate(Turno = gsub("^M$","Matutino",Turno)) %>%
+      mutate(Turno = gsub("^Ves$","Vespertino",Turno)) %>%
+      mutate(Turno = gsub("^Mix$","Mixto",Turno)) %>%
+      mutate(Turno = gsub("^Mat$","Matutino",Turno))
   }
 
   datos <- datos %>%

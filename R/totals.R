@@ -38,10 +38,6 @@ totals <- function(data, created_columns, n_column) {
       select(-((ncol(data) - 3):ncol(data)))
   }
 
-  # Fill missing values in main columns
-  data <- data %>%
-    fill(Unidad_Academica, Programa)
-
   # Prepare column names using first rows
   transposed_length <- length(created_columns)
   transposed_data <- t(data[1:transposed_length, ]) %>%
@@ -55,6 +51,10 @@ totals <- function(data, created_columns, n_column) {
 
   colnames(data)[3:ncol(data)] <- transposed_data$name
 
+  # Fill missing values in main columns
+  data <- data %>%
+    fill(Unidad_Academica, Programa)
+
   # Remove irrelevant columns
   data <- data %>%
     diiestadistica::remove_columns("Total") %>%
@@ -66,10 +66,20 @@ totals <- function(data, created_columns, n_column) {
   data <- data %>%
     diiestadistica::remove_rows_until_number(colnames(data)[n_column])
 
+  # Remove rows containing "TOTAL" or "Subtotal"
+  filter_condition <- str_detect(data$Unidad_Academica,
+                                 regex("TOTAL|Total|Subtotal|SUBTOTAL",
+                                       ignore_case = FALSE)) |
+    str_detect(data$Programa, regex("TOTAL|Subtotal", ignore_case = TRUE))
+  filter_condition[is.na(filter_condition)] <- FALSE
+  data <- data[filter_condition, ]
+  data <- data %>%
+    select(-Programa)
+
   # Restructure with pivot_longer and separate columns
   data <- data %>%
     pivot_longer(
-      cols = names(data)[3]:names(data)[ncol(data)],
+      cols = names(data)[2]:names(data)[ncol(data)],
       names_to = "dividir",
       values_to = "Datos"
     ) %>%
@@ -79,32 +89,6 @@ totals <- function(data, created_columns, n_column) {
       names = created_columns
     ) %>%
     mutate(Datos = as.integer(Datos))
-
-  # Remove rows containing "TOTAL" or "Subtotal"
-  filter_condition <- str_detect(data$Unidad_Academica,
-                                 regex("TOTAL|Total|Subtotal|SUBTOTAL", ignore_case = FALSE)) |
-    str_detect(data$Programa, regex("TOTAL|Subtotal", ignore_case = TRUE))
-  filter_condition[is.na(filter_condition)] <- FALSE
-  data <- data[filter_condition, ]
-
-  # Clean program names
-  data$Programa <- data$Programa %>%
-    str_replace_all("^Ing\\. ", "Ingeniería ") %>%
-    str_replace_all("^Lic\\. ", "Licenciatura ") %>%
-    trimws() %>%
-    diiestadistica::capitalizar() %>%
-    str_replace("^Maestria", "Maestría") %>%
-    str_replace("^M en C en Ing ", "Maestría en Ciencias en Ingeniería ") %>%
-    str_replace("^Dr en C en Ing ", "Doctorado en Ciencias en Ingeniería ") %>%
-    str_replace(" Mec$", " Mecánica") %>%
-    str_replace(
-      "^M en C y Tec de Vac y Bio$",
-      "Maestría en Ciencias y Tecnología de Vacunas y Bioterapéuticos"
-    ) %>%
-    str_replace(
-      "^Dr en C y Tec de Vacunas y Bioterapéuticos$",
-      "Doctorado en Ciencias y Tecnología de Vacunas y Bioterapéuticos"
-    )
 
   if ("Sexo" %in% colnames(data)) {
     data <- data %>%

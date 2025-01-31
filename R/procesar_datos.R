@@ -120,6 +120,10 @@ procesar_datos <- function(datos, columnas_creadas, n_columna) {
     str_replace(
       "^Dr en C y Tec de Vacunas y Bioterapéuticos$",
       "Doctorado en Ciencias y Tecnología de Vacunas y Bioterapéuticos"
+    ) %>%
+    str_replace(
+      "^Ingeniería en Mecatrónica$",
+      "Ingeniería Mecatrónica"
     )
 
   if ("Sexo" %in% colnames(datos)) {

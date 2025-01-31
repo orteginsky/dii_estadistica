@@ -35,14 +35,14 @@ add_name_in_df <- function(lista_dfs) {
     indice <- partes[2]
     anio_inicio <- as.numeric(partes[3])
     anio_final <- as.numeric(partes[4])
-    periodo <- as.numeric(partes[5])
+    semestre <- as.numeric(partes[5])
 
     # Agregar columnas al dataframe
     df$nivel <- nivel
     df$indice <- indice
     df$anio_inicio <- anio_inicio
     df$anio_final <- anio_final
-    df$periodo <- periodo
+    df$semestre <- semestre
 
     return(df)
   }

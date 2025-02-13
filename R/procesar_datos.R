@@ -149,6 +149,11 @@ procesar_datos <- function(datos, columnas_creadas, n_columna) {
       mutate(Turno = gsub("^Mat$","Matutino",Turno))
   }
 
+  if ("Concepto" %in% colnames(datos)) {
+    datos <- datos %>%
+      mutate(Concepto = gsub("^Primer Ingreso$","Nuevo Ingreso",Concepto))
+  }
+
   datos <- datos %>%
     filter(!is.na(Datos))
   # Retornar el dataframe procesado

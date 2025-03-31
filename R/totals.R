@@ -32,6 +32,9 @@ totals <- function(data, created_columns, n_column) {
   if (diiestadistica::is_completely_empty(data[1, (n_column + 1):ncol(data)])) {
     data <- data %>% slice(-1)
   }
+  if(grepl("POBLACIÓN POR EDADES",data[1,n_column])){
+    data <- data %>% slice(-1)
+  }
 
   # Prepare column names using first rows
   transposed_length <- length(created_columns)

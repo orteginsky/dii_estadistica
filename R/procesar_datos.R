@@ -44,6 +44,10 @@ procesar_datos <- function(datos, columnas_creadas, n_columna) {
   if (diiestadistica::is_completely_empty(datos[1, (n_columna + 1):ncol(datos)])) {
     datos <- datos %>% slice(-1)
   }
+  if(grepl("POBLACIÓN POR EDADES",data[1,n_column])){
+    data <- data %>% slice(-1)
+  }
+  
 
 
   # 5. Rellenar valores faltantes en columnas principales

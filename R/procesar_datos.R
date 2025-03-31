@@ -44,11 +44,7 @@ procesar_datos <- function(datos, columnas_creadas, n_columna) {
   if (diiestadistica::is_completely_empty(datos[1, (n_columna + 1):ncol(datos)])) {
     datos <- datos %>% slice(-1)
   }
-  if (sum(!is.na(datos[1, (n_columna + 1):ncol(datos)])) == 1) {
-    datos <- datos %>%
-      slice(-1) %>%
-      select(-((ncol(datos) - 3):ncol(datos)))
-  }
+
 
   # 5. Rellenar valores faltantes en columnas principales
   datos <- datos %>%

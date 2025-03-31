@@ -32,11 +32,6 @@ totals <- function(data, created_columns, n_column) {
   if (diiestadistica::is_completely_empty(data[1, (n_column + 1):ncol(data)])) {
     data <- data %>% slice(-1)
   }
-  if (sum(!is.na(data[1, (n_column + 1):ncol(data)])) == 1) {
-    data <- data %>%
-      slice(-1) %>%
-      select(-((ncol(data) - 3):ncol(data)))
-  }
 
   # Prepare column names using first rows
   transposed_length <- length(created_columns)
